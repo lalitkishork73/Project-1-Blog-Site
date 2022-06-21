@@ -5,7 +5,7 @@ const { default: mongoose } = require('mongoose');
 const app = express();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+
 
 
 mongoose.connect("mongodb+srv://Pragesh_Yadav:Mongoblog22@cluster0.ebq4hak.mongodb.net/Project_1_blogs?authSource=admin&replicaSet=atlas-46anzu-shard-0&readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=true", {

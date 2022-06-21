@@ -34,6 +34,21 @@ const getBlogs= async function(req, res){
     res.status(200).send({status: true, getBlogs:getBlogs});
 }
 
+const updateBlogsData= async(req,res) {
+    
+  let blogId = req.params.blogId;
+  let blog = await blogModel.findById(blogId);
+
+  if (!blog) {
+    return res.send("No such blog exists");
+  }
+
+  let blogData = req.body;
+  let updateData = await blogModel.findOneAndUpdate({ _id: blogId }, blogData);
+  res.send({ status: updateData, data: updateData });
+};
+
+
 
 module.exports.createBlogs = createBlogs
 module.exports.getBlogs = getBlogs
