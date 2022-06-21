@@ -1,24 +1,25 @@
 const mongoose = require('mongoose')
-const ObjectId = mongoose.Schema.types.ObjectId
+const ObjectId = mongoose.Schema.Types.ObjectId
 
-const blogSchema = new mongoose.Schema( {
+const blogSchema = new mongoose.Schema ( {
 
     title:{
         type:String,
-        require: true
+        required: true
     },
     body:{
-        require:true
+        type: String,
+        required:true
     },
     authorId:{
         type:ObjectId,
-        ref:"Author",
-        require:true
+        ref:"blogAuthor",
+        required:true
     },
     tags:[String],
     category:{
         type:String,
-        require:true,
+        required:true,
     
     },
     subcategory:[String],
@@ -26,9 +27,15 @@ const blogSchema = new mongoose.Schema( {
         type:Boolean,
         default:false
     },
-    PublishedAt:{
+    Published:{
         type:Boolean,
         default:false
+    },
+    PublishedAt:{
+        type:String,
+    },
+    deletedAt:{
+        type: String,
     }
 
 }, { timestamps: true });

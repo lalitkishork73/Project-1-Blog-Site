@@ -1,23 +1,23 @@
 const mongoose = require('mongoose')
 
-const authorSchema = new mongoose.Schema( {
-
+const authorSchema = new mongoose.Schema ( {
     firstName:{
             type:String,
-            require: true
+            required: true
     },
     lastName:{
         type:String,
-        require:true
+        required:true
     },
     title:{
+        type: String,
         enum:["Mr", "Mrs", "Miss"],
-        require: true
+        required: true
     },
     email:{
         type:String,
         unique:true,
-        require:true
+        required:true
     },
     password:{
         type:String,
@@ -25,4 +25,4 @@ const authorSchema = new mongoose.Schema( {
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Author', authorSchema)
+module.exports = mongoose.model('blogAuthor', authorSchema)
