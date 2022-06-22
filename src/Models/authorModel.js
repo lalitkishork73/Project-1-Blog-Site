@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 
 const authorSchema = new mongoose.Schema ( {
     firstName:{
+        
             type:String,
             required: true
     },
@@ -25,4 +26,4 @@ const authorSchema = new mongoose.Schema ( {
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('blogAuthor', authorSchema)
+module.exports = mongoose.model('blogAuthor', authorSchema) // blogauthor

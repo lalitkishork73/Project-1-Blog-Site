@@ -8,12 +8,12 @@ const createBlogs = async function(req, res) {
     //     res.status(400).send({status: false, error: "Please pass the body"})
     // }
     if(!blogData.authorId) {
-        return res.status(400).send({ status: false, error: "Author ObjectId is required"})
+        return res.status(400).send({ status: false, error: "Author Id is required"})
     }
-    const checkAuthor = await authorModel.findById(blogData.authorId)
+    const checkAuthor = await authorModel.findById(blogData.authorId,)
     console.log(checkAuthor)
     if(!checkAuthor) {
-        return res.status(400).send({status: false, error: "This author is not exit. Please enter correct author ObjectId"})
+        return res.status(400).send({status: false, error: "This author is not exit. Please enter correct author Id"})
     }
     // if ( Object.keys(blogData).length != 0) {
     //     res.status(400).send({status: false, error: "Please pass the body"})
