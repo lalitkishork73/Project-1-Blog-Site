@@ -5,11 +5,7 @@ const { default: mongoose } = require("mongoose");
 const app = express();
 
 app.use(bodyParser.json());
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> 98e0b0063ad4e9aa74ab9229a943008c406efc89
+
 
 
 
@@ -20,7 +16,7 @@ mongoose.connect("mongodb+srv://Pragesh_Yadav:Mongoblog22@cluster0.ebq4hak.mongo
     .catch(err => console.log(err))
 
 app.use('/', route);
->>>>>>> d047cc786d6999168cab0b2d88ee693fae6a2c04
+
 
 mongoose
   .connect(
