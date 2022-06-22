@@ -8,9 +8,10 @@ const blogController = require("../Controller/blogController");
 router.post("/authors", authorController.createAuthor); // Creating Author
 router.post("/blogs", blogController.createBlogs); // Creating blogs
 
-// router.get('/blogs', getBlogs.getBlogs);
-// router.put('/blogs/:blogId', updateBlog);
+     
+ //router.get('/blogs', getBlogs.getBlogs);
+router.put('/blogs/:blogId',blogController.updateBlogsData);
 // router.delete('/blogs/:blogId', deleteBlogById);
-// router.delete('/blogs', deleteBlogs);
+ //router.delete('/blogs', deleteBlogs);
 
 module.exports = router;
