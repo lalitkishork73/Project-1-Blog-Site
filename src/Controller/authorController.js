@@ -6,14 +6,6 @@ const createAuthor = async function (req, res) {
     let mailReg = /^([a-zA-Z0-9]+)@([a-zA-Z]+)\.([a-zA-Z]{2,7}$)/;
     let { ...Userdata } = req.body;
 
-<<<<<<< HEAD
-        let autherData = req.body
-        //const  firstLast = autherData
-        let saveAuthor = await authorModel.create(autherData)
-        res.status(201).send({status: true, data: saveAuthor})        
-}
-    
-=======
     if (Object.keys(Userdata).length == 0)
       return res
         .status(400)
@@ -46,7 +38,6 @@ const createAuthor = async function (req, res) {
       return res
         .status(400)
         .send({ status: false, msg: "Password is required" });
->>>>>>> 98e0b0063ad4e9aa74ab9229a943008c406efc89
 
     let CreatAuthor = await authorModel.create(autherData);
     res.status(201).send({ status: true, data: CreatAuthor });
