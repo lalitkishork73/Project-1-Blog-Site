@@ -95,7 +95,7 @@ const updateBlogsData = async function (req, res) {
       return res.status(404).send({ status: false, Msg: "BlogId is must be present" });
     }
     if  (Object.keys(data).length == 0){            
-     return res.status(400).send({ status: false, Msg: "Input data not found" });
+     return res.status(404).send({ status: false, Msg: "Input data not found" });
     }
     let updateData = await blogModel.findByIdAndUpdate(
       { _id: blogId },  
