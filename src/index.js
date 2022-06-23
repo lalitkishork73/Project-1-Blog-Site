@@ -18,15 +18,14 @@ mongoose.connect("mongodb+srv://Pragesh_Yadav:Mongoblog22@cluster0.ebq4hak.mongo
 app.use('/', route);
 
 
-mongoose
-  .connect(
-    "mongodb+srv://lalitkishork73:UzPr9bb6Wvxda9eC@cluster0.o2wavxe.mongodb.net/myfirst-db?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-    }
-  )
-  .then(() => console.log("MongoDb is connected"))
-  .catch((err) => console.log(err));
+// mongoose.connect(
+//     "mongodb+srv://lalitkishork73:UzPr9bb6Wvxda9eC@cluster0.o2wavxe.mongodb.net/myfirst-db?retryWrites=true&w=majority",
+//     {
+//       useNewUrlParser: true,
+//     }
+//   )
+//   .then(() => console.log("MongoDb is connected"))
+//   .catch((err) => console.log(err));
 
 app.use("/", route);
 

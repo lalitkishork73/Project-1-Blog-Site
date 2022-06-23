@@ -39,7 +39,7 @@ const createAuthor = async function (req, res) {
         .status(400)
         .send({ status: false, msg: "Password is required" });
 
-    let CreatAuthor = await authorModel.create(autherData);
+    let CreatAuthor = await authorModel.create(Userdata);
     res.status(201).send({ status: true, data: CreatAuthor });
   } catch (err) {
     res.status(500).send({ status: false, msg: "Bad Request" });
