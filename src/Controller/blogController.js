@@ -2,7 +2,6 @@
 const blogModel = require("../Models/blogModel");
 const authorModel = require("../Models/authorModel");
 
-
 const createBlogs = async function (req, res) {
   try {
     let { ...blogData } = req.body;
@@ -44,7 +43,12 @@ const createBlogs = async function (req, res) {
 // Returns all blogs in the collection that aren't deleted and are published
 
 const getBlogs = async function (req, res) {
-  let getBlogs = blogModel.find();
+  let data = req.query;
+  filter = {};
+  if (data.authorId) {
+    filter.authorId;
+  }
+
   res.status(200).send({ status: true, getBlogs: getBlogs });
 };
 
@@ -56,10 +60,6 @@ const updateBlogsData= async function(req,res) {
   if (!blog) {
     return res.send("No such blog exists");
   }
-
-  let blogData = req.body;
-  let updateData = await blogModel.findOneAndUpdate({ _id: blogId }, blogData);
-  res.send({ status: updateData, data: updateData });
 };
 
 

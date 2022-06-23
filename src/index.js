@@ -6,16 +6,13 @@ const app = express();
 
 app.use(bodyParser.json());
 
-
-
-
-mongoose.connect("mongodb+srv://Pragesh_Yadav:Mongoblog22@cluster0.ebq4hak.mongodb.net/Project_1_blogs?authSource=admin&replicaSet=atlas-46anzu-shard-0&readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=true", {
-    useNewUrlParser: true
-})
+mongoose.connect("mongodb+srv://Ravikirank9901406452:iyamph1ElXPUNhaW@cluster0.estzo.mongodb.net/Ravikirank-project1-blog?retryWrites=true&w=majority", {
+        useNewUrlParser: true,
+      }
+    )
     .then(() => console.log("MongoDb is connected"))
-    .catch(err => console.log(err))
-
-app.use('/', route);
+    .catch((err) => console.log(err));
+  
 
 
 // mongoose.connect(
