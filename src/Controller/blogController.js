@@ -81,36 +81,43 @@ const getBlogs = async function (req, res) {
 
 // Controller Module for Api ===> PUT /blogs/:blogId
 
+
 const updateBlogsData = async function (req, res) {
   try {
     let blogId = req.params.blogId;
-    let date = new Date();
-    let data = req.body;
-    if (!blogId)
-      res.status(400).send({ status: false, Msg: "BlogId is not there" });
-    if (!data == 0)
-      res.status(400).send({ status: false, Msg: "Input data not found" });
+    //let blog = await blogModel.findById(blogId)
+    let date= new Date();
+    let {...data} = req.body;
+    //  let title= data.title
+ //   let upadteTitle= blog.title
+  //  upadteTitle.push(title)
+    if (!blogId){
+      return res.status(404).send({ status: false, Msg: "BlogId is must be present" });
+    }
+    if  (Object.keys(data).length == 0){            
+     return res.status(404).send({ status: false, Msg: "Input data not found" });
+    }
     let updateData = await blogModel.findByIdAndUpdate(
-      { _id: blogId },
-      {
-        $set: {
-          title: data.title,
+      { _id: blogId },  
+      {       
+        $set: {      
+          title: upadteTitle,   
           body: data.body,
           tags: data.tags,
           subcategory: data.subcategory,
         },
-        isPublished: true,
+        Published: true,
         PublishedAt: date,
       },
       { new: true }
     );
-    res.status(201).send({ data: updateData });
+    res.status(200).send({ data: updateData });
+    
   } catch (err) {
     console.log("this is the error", err);
     res.status(500).send({ error: err.message });
   }
 };
-
 // Controller Module for Api ===> DELETE /blogs/:blogId
 
 const deleteByBlogId = async function (req, res) {

@@ -6,22 +6,22 @@ const blogController = require("../Controller/blogController");
 const midAuth = require("../Middleware/auth");
 
 router.post("/authors", authorController.createAuthor); // Creating Author
-router.post("/blogs", midAuth.Authentication, blogController.createBlogs); // Creating Blogs
-router.get("/blogs", midAuth.Authentication, blogController.getBlogs); // Getting Blogs and check login Auth
+router.post("/blogs", midAuth.authentication, blogController.createBlogs); // Creating Blogs
+router.get("/blogs", midAuth.authentication, blogController.getBlogs); // Getting Blogs and check login Auth
 
 router.put(
   "/blogs/:blogId",
-  midAuth.Authentication,
+  midAuth.authentication,
   blogController.updateBlogsData
 ); // Updating Blogs
 router.delete(
   "/blogs/:blogId",
-  midAuth.Authentication,
-  logController.deleteByBlogId
+  midAuth.authentication,
+  blogController.deleteByBlogId
 ); // DeletingBlog by path Params
 router.delete(
   "/blogs",
-  midAuth.Authentication,
+  midAuth.authentication,
   blogController.deleteBlogByQuery
 ); // DeletingBlog by query Params
 
