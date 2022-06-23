@@ -9,14 +9,13 @@ app.use(bodyParser.json());
 mongoose
   .connect(
     "mongodb+srv://lalitkishork73:UzPr9bb6Wvxda9eC@cluster0.o2wavxe.mongodb.net/myfirst-db?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-    }
+    { useNewUrlParser: true }
   )
   .then(() => console.log("MongoDb is connected"))
   .catch((err) => console.log(err));
 
 app.use("/", route);
+
 
 app.listen(process.env.PORT || 3000, function () {
   console.log("Express app running on port " + (process.env.PORT || 3000));

@@ -1,3 +1,4 @@
+const jwt= require('jsonwebtoken');
 const authorModel = require("../Models/authorModel");
 
 const createAuthor = async function (req, res) {
@@ -45,5 +46,7 @@ const createAuthor = async function (req, res) {
     res.status(500).send({ status: false, msg: "Bad Request" });
   }
 };
+
+// Controller Module for Api ===>  
 
 module.exports.createAuthor = createAuthor;

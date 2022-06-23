@@ -1,6 +1,7 @@
 const blogModel = require("../Models/blogModel");
 const authorModel = require("../Models/authorModel");
 
+// Controller Module for Api ===> POST /blogs
 const createBlogs = async function (req, res) {
   try {
     let { ...blogData } = req.body;
@@ -35,6 +36,7 @@ const createBlogs = async function (req, res) {
   }
 };
 
+// Controller Module for Api ===> GET /blogs
 const getBlogs = async function (req, res) {
   try {
     let queryData = req.query;
@@ -77,5 +79,42 @@ const getBlogs = async function (req, res) {
   }
 };
 
+// Controller Module for Api ===> PUT /blogs/:blogId
+
+const updateBlogsData = async function (req, res) {
+  try {
+    let blogId = req.params.blogId;
+    let date = new Date();
+    let data = req.body;
+    if (!blogId)
+      res.status(400).send({ status: false, Msg: "BlogId is not there" });
+    if (!data==0)
+      res.status(400).send({ status: false, Msg: "Input data not found" });
+    let updateData = await blogModel.findByIdAndUpdate(
+      { _id: blogId },
+      {
+        $set: {
+          title: data.title,
+          body: data.body,
+          tags: data.tags,
+          subcategory: data.subcategory,
+        },
+        isPublished: true,
+        PublishedAt: date,
+      },
+      { new: true }
+    );
+    res.status(201).send({ data: updateData });
+  } catch (err) {
+    console.log("this is the error", err);
+    res.status(500).send({ error: err.message });
+  }
+};
+
+// Controller Module for Api ===> DELETE /blogs/:blogId
+
+// Controller Module for Api ===> DELETE /blogs?queryParams
+
 module.exports.createBlogs = createBlogs;
 module.exports.getBlogs = getBlogs;
+module.exports.updateBlogsData = updateBlogsData;

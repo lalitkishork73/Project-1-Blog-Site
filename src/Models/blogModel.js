@@ -8,22 +8,30 @@ const blogSchema = new mongoose.Schema(
       required: true,
     },
     body: {
-      type: String,
+      type: [],
       required: true,
+      default:[]
     },
     authorId: {
-      type: ObjectId,
+      type: ObjectId,    
       ref: "blogAuthor",
       required: true,
-    },
-    tags: [String],
+    },     
+    tags:{ 
+      type:[String],
+      default:[]
+   },
     category: {
       type: String,
       required: true,
+     
     },
-    subcategory: [String],
+    subcategory:{
+      type:[String],
+      default:[]
+    },
     isDeleated: {
-      type: Boolean,
+      type: Boolean,  
       default: false,
     },
     Published: {
