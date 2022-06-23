@@ -8,8 +8,8 @@ const blogController = require("../Controller/blogController");
 router.post("/authors", authorController.createAuthor); // Creating Author
 router.post("/blogs", blogController.createBlogs); // Creating blogs
 
-// router.get('/blogs', getBlogs.getBlogs);
-// router.put('/blogs/:blogId', updateBlog);
+router.get('/blogs', blogController.getBlogs);
+//router.put('/blogs/:blogId', updateBlog);
 // router.delete('/blogs/:blogId', deleteBlogById);
 // router.delete('/blogs', deleteBlogs);
 

@@ -18,11 +18,7 @@ const createBlogs = async function (req, res) {
       return res
         .status(400)
         .send({ status: false, msg: "Title must be characters and numbers" });
-    if (!blogData.authorId) {
-      return res
-        .status(400)
-        .send({ status: false, msg: "Author Id is required" });
-    }
+
     const checkAuthor = await authorModel.findById(blogData.authorId);
     console.log(checkAuthor);
     if (!checkAuthor) {
@@ -39,33 +35,47 @@ const createBlogs = async function (req, res) {
   }
 };
 
-// Returns all blogs in the collection that aren't deleted and are published
-
 const getBlogs = async function (req, res) {
-  let getBlogs = blogModel.find();
-  res.status(200).send({ status: true, getBlogs: getBlogs });
+  try {
+    let queryData = req.query;
+
+    if (Object.keys(queryData).length == 0) {
+      let getBlogs = await blogModel
+        .find({ isDeleated: false, Published: true })
+        .populate(queryData.authorId);
+      if (!getBlogs)
+        return res.status(404).send({ status: false, msg: "Blog not Found" });
+      res.status(200).send({ status: true, data: getBlogs });
+    }
+
+    let getfiller = await blogModel.find({
+      $or: [
+        { authorId: queryData.authorId },
+        { category: queryData.category },
+        { tags: queryData.tag },
+        { subcategory: queryData.subcategory },
+      ],
+    });
+    if (getfiller.length === 0)
+      return res
+        .status(404)
+        .send({ status: false, msg: "Given Data is NOt Found" });
+
+    if (getfiller.length != 0) {
+      var fliterdata = getfiller.filter(
+        (x) => x.Published === true && x.isDeleated === false
+      );
+    }
+
+    if (fliterdata.length === 0) {
+      return res.status(404).send({ Error: "Blog does not exist" });
+    } else if (fliterdata) {
+      return res.status(200).send({ status: true, Data: fliterdata });
+    }
+  } catch (err) {
+    res.status(500).send({ status: false, msg: err.message });
+  }
 };
 
-<<<<<<< HEAD
 module.exports.createBlogs = createBlogs;
 module.exports.getBlogs = getBlogs;
-=======
-const updateBlogsData= async(req,res) {
-    
-  let blogId = req.params.blogId;
-  let blog = await blogModel.findById(blogId);
-
-  if (!blog) {
-    return res.send("No such blog exists");
-  }
-
-  let blogData = req.body;
-  let updateData = await blogModel.findOneAndUpdate({ _id: blogId }, blogData);
-  res.send({ status: updateData, data: updateData });
-};
-
-
-
-module.exports.createBlogs = createBlogs
-module.exports.getBlogs = getBlogs
->>>>>>> d047cc786d6999168cab0b2d88ee693fae6a2c04
