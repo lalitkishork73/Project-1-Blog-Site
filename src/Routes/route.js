@@ -12,16 +12,19 @@ router.get("/blogs", midAuth.authentication, blogController.getBlogs); // Gettin
 router.put(
   "/blogs/:blogId",
   midAuth.authentication,
+  midAuth.autherisation,
   blogController.updateBlogsData
 ); // Updating Blogs
 router.delete(
   "/blogs/:blogId",
   midAuth.authentication,
+  midAuth.autherisation,
   blogController.deleteByBlogId
 ); // DeletingBlog by path Params
 router.delete(
   "/blogs",
   midAuth.authentication,
+  midAuth.autherisation,
   blogController.deleteBlogByQuery
 ); // DeletingBlog by query Params
 

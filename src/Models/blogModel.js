@@ -8,7 +8,7 @@ const blogSchema = new mongoose.Schema(
       required: true,
     },
     body: {
-      type: String,
+      type: mongoose.Schema.Types.Mixed,
       required: true,
     },
     authorId: {
@@ -22,6 +22,9 @@ const blogSchema = new mongoose.Schema(
       required: true,
     },
     subcategory: [String],
+    createAt: Date,
+    updateAt: Date,
+
     isDeleted: {
       type: Boolean,
       default: false,
@@ -32,11 +35,12 @@ const blogSchema = new mongoose.Schema(
     },
     publishedAt: {
       type: String,
+      default: "",
     },
     deletedAt: {
       type: String,
-    }
-    
+      default: "",
+    },
   },
   { timestamps: true }
 );

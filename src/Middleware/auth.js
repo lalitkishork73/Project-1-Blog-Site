@@ -1,14 +1,13 @@
 const jwt = require("jsonwebtoken");
+const authorModel = require("../Models/authorModel");
 
 const authentication = async function (req, res, next) {
   try {
-    let token = req.headers["x-Api-key"];
-    if (!token) token = req.headers["x-api-key"];
+    let token = req.headers["x-Api-key"] || req.headers["x-api-key"];
     if (!token)
       return res
         .status(403)
         .send({ status: false, msg: "Warning! Token Must Be Present" });
-    console.log(token);
 
     let decodedToken = jwt.verify(token, "Secretkey");
     if (!decodedToken)
@@ -21,4 +20,28 @@ const authentication = async function (req, res, next) {
     res.status(500).send({ status: false, msg: err.message });
   }
 };
+
+let autherisation = async function (req, res) {
+  try {
+    let token = req.headers["x-Api-key"] || req.headers["x-api-key"];
+
+    let decodedToken = jwt.verify(token, "Secretkey");
+    let LoginAuthorId = decodedToken.authorId;
+
+    let authorId = await blogModel
+      .findOne({ authorId: LoginAuthorId })
+      .select({ _id: 0, authorId: 1 });
+
+    if (!authorId) {
+      return res.status(404).send({ status: false, msg: "author no alowed" });
+    }
+    req["authorId"] = decodedToken.authorId;
+    next();
+  } catch (error) {
+    console.log("This is the error :", err.message);
+    res.status(500).send({ status: false, msg: err.message });
+  }
+};
+
 module.exports.authentication = authentication;
+module.exports.autherisation = autherisation;

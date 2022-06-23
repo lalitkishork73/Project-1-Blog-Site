@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
 
-const authorSchema = new mongoose.Schema ( {
-    firstName:{
-            type:String,
-            required: true
+const authorSchema = new mongoose.Schema(
+  {
+    fname: {
+      type: String,
+      required: true,
     },
-    lastName: {
+    lname: {
       type: String,
       required: true,
     },
@@ -22,6 +23,7 @@ const authorSchema = new mongoose.Schema ( {
     password: {
       type: String,
       unique: true,
+      required: true,
     },
   },
   { timestamps: true }
