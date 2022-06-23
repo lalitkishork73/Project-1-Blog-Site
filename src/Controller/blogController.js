@@ -1,7 +1,7 @@
 const blogModel = require("../Models/blogModel");
 const authorModel = require("../Models/authorModel");
 
-// Controller Module for Api ===> POST /blogs
+// Controller for Api ===> POST /blogs
 const createBlogs = async function (req, res) {
   try {
     let { ...blogData } = req.body;
@@ -36,7 +36,7 @@ const createBlogs = async function (req, res) {
   }
 };
 
-// Controller Module for Api ===> GET /blogs
+// Controller for Api ===> GET /blogs
 const getBlogs = async function (req, res) {
   try {
     let queryData = req.query;
