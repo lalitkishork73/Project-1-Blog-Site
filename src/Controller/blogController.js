@@ -1,6 +1,7 @@
 const blogModel = require("../Models/blogModel");
 const authorModel = require("../Models/authorModel");
 
+// Controller Modeul for Api ===> POST /blogs
 const createBlogs = async function (req, res) {
   try {
     let { ...blogData } = req.body;
@@ -18,11 +19,7 @@ const createBlogs = async function (req, res) {
       return res
         .status(400)
         .send({ status: false, msg: "Title must be characters and numbers" });
-    if (!blogData.authorId) {
-      return res
-        .status(400)
-        .send({ status: false, msg: "Author Id is required" });
-    }
+
     const checkAuthor = await authorModel.findById(blogData.authorId);
     console.log(checkAuthor);
     if (!checkAuthor) {
@@ -39,17 +36,51 @@ const createBlogs = async function (req, res) {
   }
 };
 
-// Returns all blogs in the collection that aren't deleted and are published
-
+// Controller Module for Api ===> GET /blogs
 const getBlogs = async function (req, res) {
-  let data = req.query;
-  filter = {};
-  if (data.authorId) {
-    filter.authorId;
-  }
+  try {
+    let queryData = req.query;
 
-  res.status(200).send({ status: true, getBlogs: getBlogs });
+    if (Object.keys(queryData).length == 0) {
+      let getBlogs = await blogModel
+        .find({ isDeleated: false, Published: true })
+        .populate(queryData.authorId);
+      if (!getBlogs)
+        return res.status(404).send({ status: false, msg: "Blog not Found" });
+      res.status(200).send({ status: true, data: getBlogs });
+    }
+
+    let getfiller = await blogModel.find({
+      $or: [
+        { authorId: queryData.authorId },
+        { category: queryData.category },
+        { tags: queryData.tag },
+        { subcategory: queryData.subcategory },
+      ],
+    });
+    if (getfiller.length === 0)
+      return res
+        .status(404)
+        .send({ status: false, msg: "Given Data is NOt Found" });
+
+    if (getfiller.length != 0) {
+      var fliterdata = getfiller.filter(
+        (x) => x.Published === true && x.isDeleated === false
+      );
+    }
+
+    if (fliterdata.length === 0) {
+      return res.status(404).send({ Error: "Blog does not exist" });
+    } else if (fliterdata) {
+      return res.status(200).send({ status: true, Data: fliterdata });
+    }
+  } catch (err) {
+    res.status(500).send({ status: false, msg: err.message });
+  }
 };
+
+// Controller Module for Api ===> PUT /blogs/:blogId
+
 
 const updateBlogsData = async function (req, res) {
   try {
@@ -87,7 +118,83 @@ const updateBlogsData = async function (req, res) {
     res.status(500).send({ error: err.message });
   }
 };
+// Controller Module for Api ===> DELETE /blogs/:blogId
+
+const deleteByBlogId = async function (req, res) {
+  try {
+    const blogId = req.params.blogId;
+    let blog = await blogModel.findById(blogId);
+    let currentDate = new Date();
+
+    if (!blog) {
+      return res
+        .status(404)
+        .send({ status: false, msg: "No blog exist from this Id" });
+    }
+
+    if (blog.isDeleted == true) {
+      return res
+        .status(404)
+        .send({ status: false, msg: "Blog not found or Blog already deleted" });
+    }
+
+    let abc = await blogModel.findByIdAndUpdate(
+      { _id: blogId },
+      { $set: { isDeleted: true, deletedAt: currentDate } }
+    );
+    console.log(abc);
+    res.status(200).send(); 
+  } catch (err) {
+    res.status(500).send({ status: false, msg: err });
+  }
+};
+
+// Controller Module for Api ===> DELETE /blogs?queryParams
+
+const deleteBlogByQuery = async function (req, res) {
+  try {
+    let category = req.query.category;
+    let authorId = req.query.authorId;
+    let tags = req.query.tags;
+    let subcategory = req.query.subcategory;
+    let isPublished = req.query.isPublished;
+    let currentDate = new Date();
+
+    let data = await blogModel.find({
+      $or: [
+        { category: category },
+        { authorId: authorId },
+        { tags: tags },
+        { subcategory: subcategory },
+        { isPublished: isPublished },
+      ],
+    });
+    if (data.length === 0) {
+      return res.status(403).send({ status: false, message: "No data exists" });
+    }
+
+    let deleteUpdate = await blogModel.updateMany(
+      {
+        $or: [
+          { category: category },
+          { authorId: authorId },
+          { tags: tags },
+          { subcategory: subcategory },
+          { isPublished: isPublished },
+        ],
+      },
+      { $set: { isDeleted: true } },
+      { new: true }
+    );
+    res.send({ status: true, data: deleteUpdate });
+  } catch (msg) {
+    res.status(500).send({ status: false, Error: msg.message });
+  }
+};
+
 
 module.exports.createBlogs = createBlogs;
 module.exports.getBlogs = getBlogs;
 module.exports.updateBlogsData = updateBlogsData;
+module.exports.deleteByBlogId = deleteByBlogId
+module.exports.deleteBlogByQuery = deleteBlogByQuery
