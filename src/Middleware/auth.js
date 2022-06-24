@@ -4,7 +4,7 @@ const authorModel = require("../Models/authorModel");
 const authentication = async function (req, res, next) {
   try {
     let token = req.headers["x-Api-key"] || req.headers["x-api-key"];
-    if (!token)
+    if (!token) 
       return res
         .status(403)
         .send({ status: false, msg: "Warning! Token Must Be Present" });
