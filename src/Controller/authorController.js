@@ -6,8 +6,8 @@ const authorModel = require("../Models/authorModel");
 const createAuthor = async function (req, res) {
   try {
     let namReg = /^[a-zA-Z ]{2,7}$/;
-    let mailReg = /^([a-zA-Z0-9]+)@([a-zA-Z]+)\.([a-zA-Z]{2,7}$)/;
-    let passwd = /^[a-zA-Z0-9]{2,10}$/;
+    let mailReg = /^([a-zA-Z0-9]+)@([a-zA-Z]+)\.([a-zA-Z]{2,3}$)/;
+    let passwd = /^[a-zA-Z0-9]{4,10}$/;
     let { ...Userdata } = req.body;
 
     if (Object.keys(Userdata).length == 0)
@@ -53,7 +53,7 @@ const createAuthor = async function (req, res) {
 
     if (!checkAuthor) {
       let CreatAuthor = await authorModel.create(Userdata);
-      res.status(201).send({ status: true, data: CreatAuthor });
+      return res.status(201).send({ status: true, data: CreatAuthor });
     }
     res.status(409).send({ status: false, msg: "This user already exist" });
   } catch (err) {
@@ -70,28 +70,35 @@ const LoginAuthor = async function (req, res) {
     let email = req.body.email;
     let password = req.body.password;
 
-    let author = await authorModel.findOne({
-      email: email,
-      password: password,
-    });
-    if (!author)
-      return res.status(401).send({
-        status: false,
-        msg: "username or the password is not corerct",
+    if (!email) {
+      res
+        .status(400)
+        .send({ status: false, Error: "Please enter an email address." });
+    } else if (!password) {
+      res.status(400).send({ status: false, Error: "Please enter Password." });
+    } else {
+      let author = await authorModel.findOne({
+        email: email,
+        password: password,
       });
+      if (!author)
+        return res.status(400).send({
+          status: false,
+          Error: "Email or the Password is incorrect.",
+        });
 
-    let token = jwt.sign(
-      {
-        authorId: author._id.toString(),
-        Post: "Blogs",
-        organisation: "Bloger",
-      },
-      "SecretKey"
-    );
-    res.setHeader("x-api-key", token);
-    res.status(201).send({ status: true, token: token });
-
-    res.status(409).send({ status: false, msg: "user already exist" });
+      let token = jwt.sign(
+        {
+          authorId: author._id.toString(),
+          batch: "Blogs",
+          organisation: "Bloger",
+        },
+        "Secretkey",
+        { expiresIn: "36h" }
+      );
+      res.setHeader("x-api-key", token);
+      res.status(200).send({ status: true, data: token });
+    }
   } catch (err) {
     res.status(500).send({ status: false, msg: err.message });
   }
