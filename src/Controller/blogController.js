@@ -9,7 +9,7 @@ const createBlogs = async function (req, res) {
     let usualReg = /^([a-zA-Z0-9]+)/;
 
     let authorLoggedIn = req["authorId"];
-    if (authorLoggedIn!=blogData.authorId) {
+    if (authorLoggedIn != blogData.authorId) {
       res.status(404).send({ status: false, msg: "Must be Authorised" });
     }
 
@@ -99,8 +99,6 @@ const updateBlogsData = async function (req, res) {
       return mongoose.Types.ObjectId.isValid(ObjectId);
     };
 
-    
-
     if (Object.values(data).length === 0) {
       return res.status(400).send({ status: false, msg: "Input Missing" });
     }
@@ -116,13 +114,16 @@ const updateBlogsData = async function (req, res) {
       return res.status(404).send({ status: false, msg: "no blog exist" });
     }
 
+    let blogAuhor = blog.authorId.toString();
+    if (blog.authorId != blogAuhor) {
+      res.status(401).send({ status: false, msg: "not authorised" });
+    }
     //Verify that the document is deleted or not
     if (blog.isDeleted)
       return res.status(404).send({
         status: false,
         msg: "No such blog found or has already been deleted",
       });
-    blogAuhor = blog.authorId.toString();
     console.log(authorLoggedIn);
     console.log(blogAuhor);
 
@@ -165,7 +166,7 @@ const updateBlogsData = async function (req, res) {
     if (updateNewBlog.isDeleted == false) {
       let update = await blogModel.findOneAndUpdate(
         { _id: BlogId },
-        { deletedAt: currentDate }
+        { deletedAt: "" }
       );
       res.status(200).send({ status: true, data: update });
     }

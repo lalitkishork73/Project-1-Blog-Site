@@ -1,0 +1,7 @@
+Privious Methods that We Aproched
+
+-Prevously we aproched Lots Of method for find query  and for many operations but once we started testing we realised that we can make it more sort and readble 
+then we searched on google and find some tricks and methods and applied it in our projects.
+
+-The method that we wants to make is to more readble and more satisfying the user experience.
+
