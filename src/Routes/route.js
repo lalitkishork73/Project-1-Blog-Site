@@ -7,10 +7,15 @@ const midAuth = require("../Middleware/auth");
 
 router.post("/authors", authorController.createAuthor); // Creating Author
 router.post("/login", authorController.LoginAuthor);
-router.post("/blogs", blogController.createBlogs); // Creating Blogs
+router.post("/blogs", midAuth.authentication, blogController.createBlogs); // Creating Blogs
 router.get("/blogs", midAuth.authentication, blogController.getBlogs); // Getting Blogs and check login Auth
 
-router.put("/blogs/:blogId", blogController.updateBlogsData); // Updating Blogs
+router.put(
+  "/blogs/:blogId",
+  midAuth.authentication,
+  midAuth.autherisation,
+  blogController.updateBlogsData
+); // Updating Blogs
 router.delete(
   "/blogs/:blogId",
   midAuth.authentication,

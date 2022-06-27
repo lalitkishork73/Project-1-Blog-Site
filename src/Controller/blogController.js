@@ -7,6 +7,12 @@ const createBlogs = async function (req, res) {
   try {
     let { ...blogData } = req.body;
     let usualReg = /^([a-zA-Z0-9]+)/;
+
+    let authorLoggedIn = req["authorId"];
+    if (authorLoggedIn!=blogData.authorId) {
+      res.status(404).send({ status: false, msg: "Must be Authorised" });
+    }
+
     if (Object.keys(blogData).length == 0)
       return res
         .status(400)
@@ -92,6 +98,8 @@ const updateBlogsData = async function (req, res) {
     const isValidObjectId = (ObjectId) => {
       return mongoose.Types.ObjectId.isValid(ObjectId);
     };
+
+    
 
     if (Object.values(data).length === 0) {
       return res.status(400).send({ status: false, msg: "Input Missing" });
@@ -217,10 +225,10 @@ const deleteBlogByQuery = async function (req, res) {
     let currentDate = new Date();
 
     let blog = await blogModel.findById(querydata.authorId);
-    
+
     console.log(blog);
     console.log(querydata);
-    console.log(authorLoggedIn)
+    console.log(authorLoggedIn);
 
     if (Object.keys(querydata).length == 0) {
       return res.status(404).send({
