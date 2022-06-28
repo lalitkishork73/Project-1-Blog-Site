@@ -230,8 +230,6 @@ const deleteByBlogId = async function (req, res) {
   }
 };
 
-// Controller Module for Api ===> DELETE /blogs?queryParams
-
 const deleteBlogByQuery = async function (req, res) {
   try {
     let authorLoggedIn = req["authorId"];
@@ -244,23 +242,27 @@ const deleteBlogByQuery = async function (req, res) {
         msg: " Details are needed to delete a blog",
       });
     }
-    let blog = await blogModel.findById(querydata.authorId);
-    console.log(blog);
 
-
-    let data = await blogModel.find({ authorId: authorLoggedIn, querydata });
-    console.log(data);
-    if (blog) {
-      return res
-        .status(404)
-        .send({ status: false, Error: "Blog does not exist!" });
+    let data = Object.values(querydata);
+    
+    if (data.length == 0) {
+      res.status(404).send({ status: false, Error: "Blog does not exist!" });
     }
+    if(!(authorLoggedIn === data[0])){
+      
+      //console.log(deleteUpdate);
+      return res.status(404).send({ status: false, msg: "Unaurthorised" });
 
-    let deleteUpdate = await blogModel.updateMany(querydata, {
-      $set: { isDeleted: true, deletedAt: currentDate, Published: false },
-    });
-    console.log(deleteUpdate);
-    return res.status(200).send({ status: true, Data: [deleteUpdate] });
+    }
+    else {
+      let deleteUpdate = await blogModel.updateMany(querydata, {
+        $set: { isDeleted: true, deletedAt: currentDate, Published: false },
+      });
+      return res.status(200).send({ status: true, Data: [deleteUpdate] });
+    }
+    
+    // console.log(deleteUpdate);
+    // return res.status(200).send({ status: true, Data: [deleteUpdate] });
   } catch (err) {
     res.status(500).send({
       status: false,
@@ -268,6 +270,8 @@ const deleteBlogByQuery = async function (req, res) {
     });
   }
 };
+
+
 
 module.exports.createBlogs = createBlogs;
 module.exports.getBlogs = getBlogs;
