@@ -37,6 +37,7 @@ let autherisation = async function (req, res, next) {
     if (!authorId) {
       return res.status(404).send({ status: false, msg: "author no alowed" });
     }
+    req["loginAuthorId"]=authorId.authorId.toString();
     req["authorId"] = LoginAuthorId;
     next();
   } catch (err) {

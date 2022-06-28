@@ -1,47 +1,73 @@
 const jwt = require("jsonwebtoken");
 const authorModel = require("../Models/authorModel");
 
+const isValid = function (value) {
+  if (typeof value === "undefined" || value === null) return false;
+  if (typeof value === "string" && value.trim().length === 0) return false;
+  return true;
+};
+
+const isValidRequestBody = function (requestBody) {
+  return Object.keys(requestBody).length > 0;
+};
+
+const isValidTitle = function (title) {
+  return ["Mr", "Mrs", "Miss"].indexOf(title) !== -1;
+};
+
+const namReg = /^[a-zA-Z ]{2,12}$/;
+const mailReg = /^([a-zA-Z0-9]+)@([a-zA-Z]+)\.([a-zA-Z]{2,3}$)/;
+const passwd = /^[a-zA-Z0-9]{4,10}$/;
+
 // ===> Creat Author Account
 
 const createAuthor = async function (req, res) {
   try {
-    let namReg = /^[a-zA-Z ]{2,7}$/;
-    let mailReg = /^([a-zA-Z0-9]+)@([a-zA-Z]+)\.([a-zA-Z]{2,3}$)/;
-    let passwd = /^[a-zA-Z0-9]{4,10}$/;
     let { ...Userdata } = req.body;
 
-    if (Object.keys(Userdata).length == 0)
+    if (!isValidRequestBody(Userdata))
       return res
         .status(400)
         .send({ status: false, msg: "Data is required to add a Author" });
-    if (!Userdata.fname)
+
+    if (!isValid(Userdata.fname))
       return res
         .status(400)
         .send({ status: false, msg: "First Name is required" });
+
     if (!namReg.test(Userdata.fname))
       return res
         .status(400)
         .send({ status: false, msg: "First Name must be characters" });
-    if (!Userdata.lname)
+
+    if (!isValid(Userdata.lname))
       return res
         .status(400)
         .send({ status: false, msg: "Last Name is required" });
+
     if (!namReg.test(Userdata.lname))
       return res
         .status(400)
         .send({ status: false, msg: "Last Name must be characters" });
-    if (!Userdata.title)
-      return res.status(400).send({ status: false, msg: "Title is required" });
-    if (!Userdata.email)
+
+    if (!isValidTitle(Userdata.title))
+      return res
+        .status(400)
+        .send({ status: false, msg: "Title should be among Mr,Mrs,Miss" });
+
+    if (!isValid(Userdata.email))
       return res.status(400).send({ status: false, msg: "Email is required" });
+
+    if (!isValid(Userdata.password))
+      return res
+        .status(400)
+        .send({ status: false, msg: "Password is required" });
+
     if (!mailReg.test(Userdata.email))
       return res
         .status(400)
         .send({ status: false, msg: "Provide right Email" });
-    if (!Userdata.password)
-      return res
-        .status(400)
-        .send({ status: false, msg: "Password is required" });
+
     if (!passwd.test(Userdata.password))
       return res
         .status(400)
@@ -53,9 +79,15 @@ const createAuthor = async function (req, res) {
 
     if (!checkAuthor) {
       let CreatAuthor = await authorModel.create(Userdata);
-      return res.status(201).send({ status: true, data: CreatAuthor });
+      return res.status(201).send({
+        status: true,
+        msg: "Author created Successfully",
+        data: CreatAuthor,
+      });
     }
-    res.status(409).send({ status: false, msg: "This user already exist" });
+    res
+      .status(409)
+      .send({ status: false, msg: `${email} This user already exist` });
   } catch (err) {
     res
       .status(500)
@@ -70,11 +102,15 @@ const LoginAuthor = async function (req, res) {
     let email = req.body.email;
     let password = req.body.password;
 
-    if (!email) {
+    if (!isValid(email)) {
       res
         .status(400)
         .send({ status: false, Error: "Please enter an email address." });
-    } else if (!password) {
+    } else if (!mailReg.test(email))
+      return res
+        .status(400)
+        .send({ status: false, msg: "Provide right Email" });
+    else if (!isValid(password)) {
       res.status(400).send({ status: false, Error: "Please enter Password." });
     } else {
       let author = await authorModel.findOne({
