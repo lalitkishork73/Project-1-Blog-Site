@@ -21,6 +21,7 @@
     "moment": "^2.29.3",
     "mongoose": "^6.4.0",
     "node": "^18.4.0",
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "update-notifier": "^6.0.2"
   }
 }

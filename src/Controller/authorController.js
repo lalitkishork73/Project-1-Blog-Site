@@ -142,5 +142,4 @@ const LoginAuthor = async function (req, res) {
   }
 };
 
-module.exports.createAuthor = createAuthor;
-module.exports.LoginAuthor = LoginAuthor;
+module.exports = { createAuthor, LoginAuthor };

@@ -5,3 +5,17 @@ then we searched on google and find some tricks and methods and applied it in ou
 
 -The method that we wants to make is to more readble and more satisfying the user experience.
 
+-index.js have not any issues
+
+-in routes there is no issues
+
+-in model there is no issues
+
+-in middleware there is not issues
+
+-in controller there is not any issues
+
+-all files are updated and bug free
+
+-but there is some few validations
+
