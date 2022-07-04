@@ -1,27 +1,27 @@
 {
-  "name": "project-blog",
-  "version": "1.0.0",
-  "description": "blog site",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/index.js"
-  },
-  "repository": {
-    "type": "git"
-  },
-  "author": "Pragesh Y,Ravikiran k,LalitKishor k",
-  "license": "ISC",
-  "bugs": {},
-  "homepage": "",
-  "dependencies": {
-    "body-parser": "^1.20.0",
-    "express": "^4.18.1",
-    "jsonwebtoken": "^8.5.1",
-    "moment": "^2.29.3",
-    "mongoose": "^6.4.0",
-    "node": "^18.4.0",
-    "nodemon": "^1.19.4",
-    "update-notifier": "^6.0.2"
-  }
+    "name": "project-blog",
+    "version": "1.0.0",
+    "description": "blog site",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon src/index.js"
+    },
+    "repository": {
+        "type": "git"
+    },
+    "author": "Pragesh Y,Ravikiran k,LalitKishor k",
+    "license": "ISC",
+    "bugs": {},
+    "homepage": "",
+    "dependencies": {
+        "body-parser": "^1.20.0",
+        "express": "^4.18.1",
+        "jsonwebtoken": "^8.5.1",
+        "moment": "^2.29.3",
+        "mongoose": "^6.4.0"
+    },
+    "devDependencies": {
+        "nodemon": "^1.3.3"
+    }
 }
