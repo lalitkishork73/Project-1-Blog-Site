@@ -1,6 +1,0 @@
-{
-    "debug.allowBreakpointsEverywhere": true,
-    "files.autoGuessEncoding": true,
-    "files.autoSave": "afterDelay",
-    "editor.insertSpaces": true
-}
